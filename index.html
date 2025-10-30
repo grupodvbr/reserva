@@ -2,202 +2,226 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Reservas • Mercatto Delícia</title>
+  <title>Reserva • Mercatto Delícia</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <meta name="color-scheme" content="dark" />
 
-  <!-- 🔹 ÍCONE E CAPA -->
-  <link rel="icon" type="image/png" href="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true">
+  <link rel="icon" href="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true">
   <link rel="apple-touch-icon" href="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true">
-
-  <!-- 🔹 METADADOS DE COMPARTILHAMENTO -->
-  <meta property="og:title" content="Reservas • Mercatto Delícia">
-  <meta property="og:description" content="Garanta sua reserva no Mercatto Delícia e viva uma experiência inesquecível!">
-  <meta property="og:image" content="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://grupodvbr.github.io/aniversariosmercatto/">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Reservas • Mercatto Delícia">
-  <meta name="twitter:description" content="Garanta sua reserva no Mercatto Delícia e viva uma experiência inesquecível!">
-  <meta name="twitter:image" content="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true">
 
   <style>
     :root{
-      --brand:#22c55e; --brand-2:#16a34a; --text:#f5f7fb; --muted:#c9ced8;
-      --line:rgba(255,255,255,.14);
+      --brand:#b8860b;
+      --bg:#0b0f19;
+      --card:#151b28;
+      --text:#f5f7fb;
+      --muted:#9ca3af;
+      --line:#1e2533;
     }
-    *{box-sizing:border-box}
-    html,body{margin:0}
-    body{font-family:system-ui,Arial,sans-serif;background:#0b0e13;color:var(--text)}
-    header{padding:16px}
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      height:100vh;
+      overflow:hidden;
+    }
+    .logo{
+      width:160px;
+      height:auto;
+      margin-bottom:30px;
+      animation:fadeIn 1s ease forwards;
+    }
 
-    /* Imagem da capa */
-    .hero{max-width:840px;margin:0 auto}
-    .hero-img{
-      display:block;width:100%;height:auto;border-radius:18px;
-      box-shadow:0 10px 32px rgba(0,0,0,.45);object-fit:cover;
+    /* ========== MODAL ========= */
+    dialog{
+      width:min(420px,94vw);
+      background:var(--card);
+      color:var(--text);
+      border:none;
+      border-radius:20px;
+      padding:0;
+      box-shadow:0 15px 45px rgba(0,0,0,.5);
+      animation:fadeIn .4s ease forwards;
     }
-
-    /* Botões */
-    .actions{
-      max-width:840px;margin:12px auto 0;display:flex;gap:12px;flex-wrap:wrap;justify-content:center
+    dialog::backdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+    .modal-head{
+      text-align:center;
+      padding:16px;
+      border-bottom:1px solid var(--line);
+      font-weight:700;
+      font-size:1.1rem;
+      color:var(--brand);
     }
+    .modal-body{
+      padding:20px;
+      display:grid;
+      gap:14px;
+    }
+    label{font-size:.9rem;font-weight:600;color:var(--muted)}
+    input,textarea{
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background:#0f131c;
+      color:var(--text);
+      font-size:15px;
+      outline:none;
+    }
+    input:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 2px rgba(184,134,11,.25)}
+    textarea{min-height:70px;resize:none}
     .btn{
-      padding:14px 18px;border-radius:14px;font-weight:800;font-size:15px;
-      display:flex;align-items:center;justify-content:center;gap:10px;
-      border:1px solid var(--line);cursor:pointer;text-decoration:none;color:#fff;
-      background:rgba(255,255,255,.08);transition:filter .2s ease,transform .06s ease;
+      background:var(--brand);
+      border:none;
+      border-radius:10px;
+      color:#fff;
+      font-weight:700;
+      padding:12px;
+      font-size:1rem;
+      cursor:pointer;
+      transition:.2s;
     }
-    .btn:active{transform:translateY(1px)}
-    .btn:hover{filter:brightness(1.05)}
-    .btn.whatsapp{background:linear-gradient(180deg,var(--brand),var(--brand-2));border:none}
-    @media (max-width:560px){ .btn{width:100%} }
+    .btn:hover{filter:brightness(1.1)}
+    .close-btn{
+      background:none;
+      border:none;
+      color:var(--muted);
+      font-size:.9rem;
+      text-align:center;
+      cursor:pointer;
+      margin-top:8px;
+    }
 
-    /* Modal */
-    dialog{width:min(560px,96vw);border:none;padding:0;border-radius:18px;background:#0c0f14;color:#fff}
-    dialog::backdrop{background:rgba(0,0,0,.55)}
-    .modal-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
-    .modal-head h3{margin:0;font-size:16px}
-    .modal-head button{border:1px solid var(--line);background:transparent;color:#fff;border-radius:10px;padding:8px 12px;cursor:pointer}
-    .modal-body{padding:16px}
-    form{display:grid;gap:14px}
-    label{font-weight:700;font-size:13px}
-    input,textarea,button{
-      padding:12px;border-radius:12px;border:1px solid var(--line);background:#0f131a;color:#fff;font-size:15px
+    /* ========== OVERLAY ========= */
+    #overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.85);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      z-index:99;
+      color:#fff;
+      font-family:Inter,sans-serif;
     }
-    .row{display:grid;gap:14px;grid-template-columns:1fr 1fr}
-    @media(max-width:640px){.row{grid-template-columns:1fr}}
-    .submit{background:linear-gradient(180deg,var(--brand),var(--brand-2));border:none;font-weight:800;cursor:pointer}
-    .spinner{display:none;color:var(--muted);font-size:14px;text-align:center}
-    .spinner.show{display:block}
+    #overlay.show{display:flex;animation:fadeIn .3s ease forwards;}
+    .loader{
+      border:4px solid rgba(255,255,255,.2);
+      border-top:4px solid var(--brand);
+      border-radius:50%;
+      width:48px;height:48px;
+      animation:spin 1s linear infinite;
+      margin-bottom:16px;
+    }
+
+    /* ========== CONFIRMAÇÃO ========= */
+    #successMsg{
+      display:none;
+      text-align:center;
+      font-size:1.1rem;
+      animation:fadeInUp .5s ease forwards;
+    }
+    #successMsg.show{display:block;}
+
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes spin{to{transform:rotate(360deg)}}
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="hero">
-      <img
-        class="hero-img"
-        src="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true"
-        alt="Mercatto Delícia - Capa de Reservas">
-    </div>
+  <img class="logo" src="https://github.com/grupodvbr/cardapiomercatto/blob/main/icons/logo.png?raw=true" alt="Mercatto Delícia">
 
-    <div class="actions">
-      <button id="btnReservar" class="btn reserve" type="button">🗓️ Reservar</button>
-      <a id="btnAtendente" class="btn whatsapp">💬 Falar com atendente</a>
-    </div>
-  </header>
-
-  <dialog id="modalReserva">
-    <div class="modal-head">
-      <h3>📅 Nova Reserva</h3>
-      <button id="fecharModal" type="button">Fechar</button>
-    </div>
+  <dialog id="modalReserva" open>
+    <div class="modal-head">📅 Reserva Mercatto Delícia</div>
     <div class="modal-body">
-      <form id="reservaForm" autocomplete="on" novalidate>
-        <div class="row">
-          <div>
-            <label>Nome</label>
-            <input type="text" name="nome" required placeholder="Seu nome completo">
-          </div>
-          <div>
-            <label>Email</label>
-            <input type="email" name="email" required placeholder="seu@email.com">
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label>Telefone</label>
-            <input type="tel" name="telefone" required inputmode="tel" placeholder="(DDD) 9 0000-0000">
-          </div>
-          <div>
-            <label>Pessoas</label>
-            <input type="number" name="pessoas" min="1" required placeholder="Qtd. de pessoas">
-          </div>
-        </div>
-
+      <form id="reservaForm" novalidate>
         <div>
-          <label>Data e Hora</label>
+          <label>Nome</label>
+          <input type="text" name="nome" required placeholder="Seu nome completo">
+        </div>
+        <div>
+          <label>Email</label>
+          <input type="email" name="email" required placeholder="seu@email.com">
+        </div>
+        <div>
+          <label>Telefone</label>
+          <input type="tel" name="telefone" required placeholder="(DDD) 9 0000-0000">
+        </div>
+        <div>
+          <label>Nº de pessoas</label>
+          <input type="number" name="pessoas" min="1" required placeholder="Quantidade">
+        </div>
+        <div>
+          <label>Data e hora</label>
           <input type="datetime-local" name="datahora" required>
         </div>
-
         <div>
           <label>Observações</label>
-          <textarea name="observacoes" rows="3" placeholder="Preferências, observações..."></textarea>
+          <textarea name="observacoes" placeholder="Preferências, aniversariante, etc."></textarea>
         </div>
-
-        <div class="spinner" id="spinner">⬤ Enviando reserva...</div>
-        <button class="submit" type="submit">Enviar Reserva</button>
+        <button class="btn" type="submit">Enviar reserva</button>
       </form>
+      <button class="close-btn" type="button" onclick="window.location.reload()">Cancelar</button>
     </div>
   </dialog>
 
+  <!-- Overlay de envio -->
+  <div id="overlay">
+    <div class="loader"></div>
+    <div id="overlayText">Enviando sua reserva...</div>
+    <div id="successMsg">🎉 Sua reserva foi registrada com sucesso!<br>Em breve nossa equipe entrará em contato.</div>
+  </div>
+
   <script>
     const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycby5djD-cV2iMX4OCLV4YL2pvfhMVg2ihhT6Imkj2nA-P8zeGxOC0d9Xr9-d7voGbOWSjw/exec";
-    const WHATSAPP_NUMBER = "557736135148";
-    const WHATSAPP_MSG = "Olá! Quero fazer uma reserva no Mercatto Delícia.";
 
-    const modal = document.getElementById("modalReserva");
-    const btnReservar = document.getElementById("btnReservar");
-    const btnAtendente = document.getElementById("btnAtendente");
-    const fecharModal = document.getElementById("fecharModal");
     const form = document.getElementById("reservaForm");
-    const spinner = document.getElementById("spinner");
+    const overlay = document.getElementById("overlay");
+    const overlayText = document.getElementById("overlayText");
+    const successMsg = document.getElementById("successMsg");
 
-    btnReservar.addEventListener("click", () => modal.showModal());
-    fecharModal.addEventListener("click", () => modal.close());
-    modal.addEventListener("cancel", e => { e.preventDefault(); modal.close(); });
-
-    btnAtendente.addEventListener("click", e => {
-      e.preventDefault();
-      const texto = encodeURIComponent(WHATSAPP_MSG + "\n\nPágina: " + location.href);
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texto}`, "_blank");
-    });
-
-    function isValidEmail(email) {
-      const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-      return regex.test(email.trim());
+    function isValidEmail(email){
+      return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email.trim());
     }
 
     form.addEventListener("submit", async e => {
       e.preventDefault();
-      spinner.classList.add("show");
+      overlay.classList.add("show");
+      overlayText.textContent = "Enviando sua reserva...";
+      successMsg.classList.remove("show");
 
       const fd = new FormData(form);
-      const nome = fd.get("nome")?.trim() || "";
-      const email = fd.get("email")?.trim() || "";
-      const telefone = fd.get("telefone")?.trim() || "";
-      const pessoas = fd.get("pessoas")?.trim() || "";
-      const datahora = fd.get("datahora")?.trim() || "";
-      const observacoes = fd.get("observacoes")?.trim() || "";
+      const params = new URLSearchParams(fd);
 
-      if (!isValidEmail(email)) {
+      const email = fd.get("email")?.trim();
+      if(!isValidEmail(email)){
+        overlay.classList.remove("show");
         alert("❗ Informe um e-mail válido.");
-        spinner.classList.remove("show");
         return;
       }
 
-      const params = new URLSearchParams();
-      params.append("nome", nome);
-      params.append("email", email);
-      params.append("telefone", telefone);
-      params.append("pessoas", pessoas);
-      params.append("datahora", datahora);
-      params.append("observacoes", observacoes);
-      params.append("status", "Pendente");
-
-      try {
-        const res = await fetch(GAS_ENDPOINT, { method: "POST", body: params });
-        const texto = await res.text();
-        alert(texto || "✅ Reserva registrada e e-mail enviado com sucesso!");
-        form.reset();
-        modal.close();
-      } catch (err) {
-        console.error(err);
-        alert("⚠️ Erro ao enviar reserva. Verifique sua conexão e tente novamente.");
-      } finally {
-        spinner.classList.remove("show");
+      try{
+        const res = await fetch(GAS_ENDPOINT, { method:"POST", body:params });
+        if(res.ok){
+          overlayText.textContent = "";
+          successMsg.classList.add("show");
+          form.reset();
+          setTimeout(()=>{overlay.classList.remove("show");},4000);
+        }else{
+          overlayText.textContent = "❌ Erro ao enviar reserva. Tente novamente.";
+          setTimeout(()=>overlay.classList.remove("show"),2500);
+        }
+      }catch(err){
+        overlayText.textContent = "⚠️ Falha de conexão. Verifique sua internet.";
+        setTimeout(()=>overlay.classList.remove("show"),2500);
       }
     });
   </script>

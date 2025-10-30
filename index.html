@@ -1,93 +1,110 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Reserva Delícia Gourmet</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Reserva • Mercatto Delícia</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="theme-color" content="#0b0e13">
+  <link rel="icon" href="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true">
 
-<style>
-:root{
-  --bg:#0b0f19;--card:#151d2f;--text:#f8fafc;
-  --accent:#b8860b;--muted:#94a3b8;
-}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:'Inter',sans-serif;display:flex;justify-content:center;align-items:center;
-  min-height:100vh;padding:1rem;
-}
-form{
-  background:var(--card);border-radius:16px;padding:1.5rem;width:100%;max-width:340px;
-  box-shadow:0 0 20px rgba(0,0,0,.3);
-}
-.logo{
-  display:flex;justify-content:center;margin-bottom:1rem;
-}
-.logo img{width:90px;border-radius:50%;}
-h2{text-align:center;color:var(--accent);margin-bottom:1rem;font-size:1.1rem;}
-input,select,button{
-  width:100%;padding:0.7rem;border-radius:8px;border:none;margin-bottom:0.8rem;
-  font-size:0.9rem;
-}
-input,select{background:#1e293b;color:var(--text);}
-button{
-  background:var(--accent);color:#000;font-weight:600;cursor:pointer;
-}
-button:hover{opacity:0.9;}
-small{
-  display:block;text-align:center;color:var(--muted);font-size:0.75rem;margin-top:0.5rem;
-}
-</style>
+  <style>
+    :root{
+      --brand:#22c55e;--brand2:#16a34a;--bg:#0b0e13;--text:#f5f7fb;--muted:#c9ced8;--line:rgba(255,255,255,.12);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;padding:1.5rem;background:var(--bg);color:var(--text);
+      font-family:system-ui,Arial,sans-serif;display:flex;justify-content:center;align-items:center;
+      min-height:100vh;
+    }
+    form{
+      background:#0c1017;border-radius:16px;padding:1.5rem;width:100%;max-width:420px;
+      box-shadow:0 0 20px rgba(0,0,0,.4);
+    }
+    h2{text-align:center;color:var(--brand);margin-bottom:1.5rem;font-weight:800;font-size:1.2rem;}
+    label{font-weight:600;font-size:13px;display:block;margin-bottom:4px;}
+    input,textarea,button{
+      width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);
+      background:#0f131a;color:var(--text);font-size:15px;margin-bottom:14px;
+    }
+    textarea{resize:none}
+    button{
+      background:linear-gradient(180deg,var(--brand),var(--brand2));border:none;font-weight:800;
+      cursor:pointer;color:#fff;transition:filter .2s ease,transform .05s ease;
+    }
+    button:active{transform:translateY(1px)}
+    button:hover{filter:brightness(1.05)}
+    .spinner{display:none;text-align:center;color:var(--muted);margin-top:10px;font-size:14px;}
+    .spinner.show{display:block}
+  </style>
 </head>
 <body>
-<form id="reservaForm">
-  <div class="logo"><img src="https://i.imgur.com/L1yXkhY.png" alt="Mercatto Delícia"></div>
-  <h2>RESERVA DELÍCIA GOURMET</h2>
 
-  <input type="text" name="nome" placeholder="Nome" required>
-  <input type="date" name="data" required>
-  <input type="time" name="horario" required>
-  <input type="text" name="mesa" placeholder="Mesa">
-  <input type="number" name="pessoas" placeholder="Nº de pessoas" required>
-  <input type="tel" name="contato" placeholder="(00) 00000-0000" required>
-  <input type="email" name="email" placeholder="Email">
-  <input type="text" name="ocasiao" placeholder="Ocasião (aniversário, jantar, etc.)">
-  <input type="text" name="decoracao" placeholder="Decoração">
-  <select name="comanda">
-    <option value="SIM">Comandas individuais - SIM</option>
-    <option value="NÃO">Comandas individuais - NÃO</option>
-  </select>
+<form id="reservaForm" novalidate>
+  <h2>📅 Reserva Mercatto Delícia</h2>
 
-  <button type="submit">ENVIAR RESERVA</button>
-  <small>Bem-vindo ao formulário de reservas.<br>Cobramos couvert artístico de quarta a sábado e taxa de 10%.</small>
+  <label>Nome</label>
+  <input type="text" name="nome" required placeholder="Seu nome completo">
+
+  <label>Email</label>
+  <input type="email" name="email" required placeholder="seu@email.com">
+
+  <label>Telefone</label>
+  <input type="tel" name="telefone" required placeholder="(DDD) 9 0000-0000">
+
+  <label>Nº de pessoas</label>
+  <input type="number" name="pessoas" min="1" required placeholder="Quantidade de pessoas">
+
+  <label>Data e hora</label>
+  <input type="datetime-local" name="datahora" required>
+
+  <label>Observações</label>
+  <textarea name="obs" rows="3" placeholder="Preferências, aniversariante, decoração..."></textarea>
+
+  <button type="submit">Enviar Reserva</button>
+  <div class="spinner" id="spinner">⬤ Enviando reserva...</div>
 </form>
 
 <script>
-document.getElementById('reservaForm').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const data = Object.fromEntries(new FormData(e.target).entries());
-  const endpoint = "https://script.google.com/macros/s/AKfycby4QPpBrS2KiPSxXL0kFIeE-jVu4kJFss3ervgaPe0IMQhCuj8q0Fq-3gkuQLzz4Z3RTw/exec"; // Substitua pelo seu link de implantação
+const FORM = document.getElementById("reservaForm");
+const SPINNER = document.getElementById("spinner");
+const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbwzvibdkhqCtp8b_P1AKM47ofX7HRurEnX5evFauVO9KtQ5a8I5mED50D5EJBCvKj5HFQ/exec"; // substitua pelo link implantado
 
-  const btn = e.target.querySelector("button");
-  btn.disabled = true;
-  btn.textContent = "Enviando...";
+function isValidEmail(email){
+  return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email.trim());
+}
+
+FORM.addEventListener("submit", async e=>{
+  e.preventDefault();
+  SPINNER.classList.add("show");
+
+  const data = Object.fromEntries(new FormData(FORM).entries());
+  if(!isValidEmail(data.email)){
+    alert("❗ Informe um e-mail válido.");
+    SPINNER.classList.remove("show");
+    return;
+  }
 
   try{
-    const res = await fetch(endpoint,{
+    const res = await fetch(GAS_ENDPOINT, {
       method:"POST",
       body:JSON.stringify(data),
       headers:{"Content-Type":"application/json"}
     });
-    const msg = await res.text();
-    alert("Reserva enviada com sucesso!");
-    e.target.reset();
+    const resp = await res.json();
+    if(resp.sucesso){
+      alert("✅ Reserva enviada com sucesso!");
+      FORM.reset();
+    }else{
+      alert("⚠️ Erro: " + resp.erro);
+    }
   }catch(err){
-    alert("Erro ao enviar. Tente novamente.");
+    alert("Erro ao enviar reserva. Verifique sua conexão.");
   }finally{
-    btn.disabled = false;
-    btn.textContent = "ENVIAR RESERVA";
+    SPINNER.classList.remove("show");
   }
 });
 </script>
+
 </body>
 </html>

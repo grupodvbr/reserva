@@ -4,170 +4,90 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Reserva Delícia Gourmet</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg:#0b0f19;
-  --card:#151c2b;
-  --accent:#b8860b;
-  --text:#f8fafc;
-  --muted:#94a3b8;
-  --input:#1f2937;
-  --success:#22c55e;
+  --bg:#0b0f19;--card:#151d2f;--text:#f8fafc;
+  --accent:#b8860b;--muted:#94a3b8;
 }
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 body{
-  background:linear-gradient(135deg,#0b0f19 60%,#111827);
-  color:var(--text);
-  display:flex;align-items:center;justify-content:center;
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:'Inter',sans-serif;display:flex;justify-content:center;align-items:center;
   min-height:100vh;padding:1rem;
 }
-.container{
-  background:var(--card);
-  padding:2rem;
-  border-radius:1.25rem;
-  width:100%;max-width:430px;
-  box-shadow:0 0 25px #0008;
-  position:relative;overflow:hidden;
+form{
+  background:var(--card);border-radius:16px;padding:1.5rem;width:100%;max-width:340px;
+  box-shadow:0 0 20px rgba(0,0,0,.3);
 }
 .logo{
-  display:flex;justify-content:center;align-items:center;
-  margin-bottom:1rem;
+  display:flex;justify-content:center;margin-bottom:1rem;
 }
-.logo img{
-  width:110px;height:110px;border-radius:50%;
-  box-shadow:0 0 20px var(--accent);
-  border:2px solid var(--accent);
+.logo img{width:90px;border-radius:50%;}
+h2{text-align:center;color:var(--accent);margin-bottom:1rem;font-size:1.1rem;}
+input,select,button{
+  width:100%;padding:0.7rem;border-radius:8px;border:none;margin-bottom:0.8rem;
+  font-size:0.9rem;
 }
-h2{text-align:center;margin-bottom:1.5rem;color:var(--accent);letter-spacing:1px;}
-label{
-  display:block;margin-top:1rem;font-weight:600;color:var(--muted);
-  font-size:.85rem;
-}
-input,select{
-  width:100%;padding:.85rem;border:none;border-radius:.6rem;
-  margin-top:.4rem;background:var(--input);color:var(--text);
-  font-size:.9rem;transition:.2s;
-}
-input:focus,select:focus{outline:2px solid var(--accent);}
-.email-field{text-transform:lowercase;border:2px solid var(--accent);}
+input,select{background:#1e293b;color:var(--text);}
 button{
-  margin-top:2rem;width:100%;padding:1rem;background:var(--accent);
-  border:none;border-radius:.6rem;color:#fff;font-weight:600;
-  cursor:pointer;transition:.3s;font-size:1rem;
+  background:var(--accent);color:#000;font-weight:600;cursor:pointer;
 }
-button:hover{transform:scale(1.03);opacity:.9;}
+button:hover{opacity:0.9;}
 small{
-  display:block;text-align:center;color:var(--muted);
-  margin-top:1.5rem;font-size:.8rem;line-height:1.4;
-}
-#overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.85);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  color:white;z-index:999;font-size:1.1rem;
-  backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:.4s;
-}
-#overlay.active{opacity:1;pointer-events:all;}
-.loader{
-  border:4px solid #333;border-top:4px solid var(--accent);
-  border-radius:50%;width:70px;height:70px;
-  animation:spin 1s linear infinite;margin-bottom:1rem;
-}
-@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
-#sucesso{
-  position:absolute;inset:0;background:rgba(0,0,0,.8);
-  display:flex;align-items:center;justify-content:center;flex-direction:column;
-  color:#fff;font-size:1rem;backdrop-filter:blur(4px);
-  opacity:0;pointer-events:none;transition:.4s;
-}
-#sucesso.active{opacity:1;pointer-events:all;}
-.check{
-  width:85px;height:85px;border:4px solid var(--success);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;margin-bottom:1rem;
-}
-.check::after{
-  content:'';width:32px;height:18px;border-left:4px solid var(--success);
-  border-bottom:4px solid var(--success);transform:rotate(-45deg);
+  display:block;text-align:center;color:var(--muted);font-size:0.75rem;margin-top:0.5rem;
 }
 </style>
 </head>
 <body>
-
-<div class="container">
-  <div class="logo"><img src="https://github.com/ClenaStore/cardapiomercatto/blob/main/icons/logo.png?raw=true" alt="Delícia Gourmet"></div>
+<form id="reservaForm">
+  <div class="logo"><img src="https://i.imgur.com/L1yXkhY.png" alt="Mercatto Delícia"></div>
   <h2>RESERVA DELÍCIA GOURMET</h2>
 
-  <form id="formReserva">
-    <label>NOME</label><input type="text" name="nome" required>
-    <label>DATA</label><input type="date" name="data" required>
-    <label>HORÁRIO</label><input type="time" name="horario" required>
-    <label>MESA</label><input type="text" name="mesa">
-    <label>Nº DE PESSOAS</label><input type="text" name="pessoas" id="pessoas" required>
-    <label>CONTATO</label><input type="tel" name="contato" id="telefone" placeholder="(00) 00000-0000" required>
-    <label>EMAIL</label><input type="email" name="email" class="email-field" required>
-    <label>OCASIÃO</label><input type="text" name="ocasiao">
-    <label>DECORAÇÃO</label><input type="text" name="decoracao">
-    <label>COMANDAS INDIVIDUAIS</label>
-    <select name="comandas"><option value="SIM">SIM</option><option value="NÃO">NÃO</option></select>
+  <input type="text" name="nome" placeholder="Nome" required>
+  <input type="date" name="data" required>
+  <input type="time" name="horario" required>
+  <input type="text" name="mesa" placeholder="Mesa">
+  <input type="number" name="pessoas" placeholder="Nº de pessoas" required>
+  <input type="tel" name="contato" placeholder="(00) 00000-0000" required>
+  <input type="email" name="email" placeholder="Email">
+  <input type="text" name="ocasiao" placeholder="Ocasião (aniversário, jantar, etc.)">
+  <input type="text" name="decoracao" placeholder="Decoração">
+  <select name="comanda">
+    <option value="SIM">Comandas individuais - SIM</option>
+    <option value="NÃO">Comandas individuais - NÃO</option>
+  </select>
 
-    <button type="submit">ENVIAR RESERVA</button>
-  </form>
-
-  <small>Bem-vindo ao formulário de reservas.<br>
-  Cobramos couvert artístico de quarta a sábado e taxa de 10%.</small>
-
-  <div id="sucesso">
-    <div class="check"></div>
-    <p>Reserva enviada com sucesso!</p>
-  </div>
-</div>
-
-<div id="overlay"><div class="loader"></div><p>ENVIANDO SUA RESERVA...</p></div>
+  <button type="submit">ENVIAR RESERVA</button>
+  <small>Bem-vindo ao formulário de reservas.<br>Cobramos couvert artístico de quarta a sábado e taxa de 10%.</small>
+</form>
 
 <script>
-// Máscara telefone
-document.getElementById('telefone').addEventListener('input', e=>{
-  let x=e.target.value.replace(/\D/g,'').substring(0,11);
-  let ddd=x.substring(0,2),p1=x.substring(2,7),p2=x.substring(7,11);
-  if(x.length>7)e.target.value=`(${ddd}) ${p1}-${p2}`;
-  else if(x.length>2)e.target.value=`(${ddd}) ${p1}`;
-  else if(x.length>0)e.target.value=`(${ddd}`;
-});
-// Apenas números em "pessoas"
-document.getElementById('pessoas').addEventListener('input',e=>{
-  e.target.value=e.target.value.replace(/\D/g,'');
-});
-// Email sempre minúsculo
-document.querySelector('.email-field').addEventListener('input',e=>{
-  e.target.value=e.target.value.toLowerCase();
-});
-// Envio
-document.getElementById('formReserva').addEventListener('submit',async e=>{
+document.getElementById('reservaForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
-  const overlay=document.getElementById('overlay');
-  overlay.classList.add('active');
-  const form=e.target;
-  const data=Object.fromEntries(new FormData(form).entries());
+  const data = Object.fromEntries(new FormData(e.target).entries());
+  const endpoint = "https://script.google.com/macros/s/AKfycby4QPpBrS2KiPSxXL0kFIeE-jVu4kJFss3ervgaPe0IMQhCuj8q0Fq-3gkuQLzz4Z3RTw/exec"; // Substitua pelo seu link de implantação
+
+  const btn = e.target.querySelector("button");
+  btn.disabled = true;
+  btn.textContent = "Enviando...";
+
   try{
-    const resp=await fetch("https://script.google.com/macros/s/AKfycby-iQmOAT86Iqra1UhjryCtuGeHs6-_XMay4lmEp5nePQ3G4UaYOmoZl-vs8CSuxva97g/exec",{
+    const res = await fetch(endpoint,{
       method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(data)
+      body:JSON.stringify(data),
+      headers:{"Content-Type":"application/json"}
     });
-    const json=await resp.json();
-    overlay.classList.remove('active');
-    if(json.status==="success"){
-      document.getElementById('sucesso').classList.add('active');
-      setTimeout(()=>{document.getElementById('sucesso').classList.remove('active');form.reset();},4000);
-    }else alert("Erro: "+json.message);
-  }catch{
-    overlay.classList.remove('active');
-    alert("Erro de conexão. Verifique o link do script.");
+    const msg = await res.text();
+    alert("Reserva enviada com sucesso!");
+    e.target.reset();
+  }catch(err){
+    alert("Erro ao enviar. Tente novamente.");
+  }finally{
+    btn.disabled = false;
+    btn.textContent = "ENVIAR RESERVA";
   }
 });
 </script>
-
 </body>
 </html>

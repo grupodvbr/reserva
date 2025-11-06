@@ -2,163 +2,166 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Reserva • Delícia Gourmet</title>
+  <title>Painel de Reservas • Delícia Gourmet</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta name="color-scheme" content="light dark" />
   <style>
     :root{
-      --bg:#f3f5f9; --card:#ffffff; --text:#0f172a; --muted:#64748b;
-      --line:#e5e7eb; --brand:#2563eb; --brand-2:#1e40af;
-      --danger:#ef4444; --radius:16px; --shadow:0 12px 30px rgba(0,0,0,.1);
+      --bg:#f3f5f9; --card:#ffffff; --text:#0f172a; --muted:#64748b; --line:#e5e7eb;
+      --brand:#2563eb; --brand-2:#1e40af; --ok:#16a34a; --warn:#b45309; --danger:#ef4444;
+      --accent:#f59e0b; --radius:16px; --shadow:0 12px 30px rgba(2,6,23,.06); --glass:rgba(255,255,255,.6);
     }
     @media (prefers-color-scheme: dark){
       :root{
-        --bg:#0b0e14; --card:#0f131b; --text:#e5e7eb; --muted:#9ca3af;
-        --line:#1f2937; --shadow:0 12px 30px rgba(0,0,0,.35);
+        --bg:#0b0e14; --card:#0f131b; --text:#e5e7eb; --muted:#9ca3af; --line:#1f2937;
+        --shadow:0 12px 30px rgba(0,0,0,.35); --glass:rgba(17,24,39,.5);
       }
     }
-    *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
+    *{box-sizing:border-box}
     body{
-      background:var(--bg);color:var(--text);
-      display:flex;align-items:center;justify-content:center;
-      min-height:100vh;padding:1rem;
+      margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg); color:var(--text);
+      display:flex; align-items:center; justify-content:center; min-height:100vh; padding:1rem;
     }
-    form{
-      background:var(--card);padding:2rem 1.5rem;border-radius:var(--radius);
-      box-shadow:var(--shadow);max-width:480px;width:100%;
+    .card{
+      background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
+      max-width:520px; width:100%; overflow:hidden;
     }
-    h2{text-align:center;margin-bottom:1rem;font-weight:800;}
-    label{font-weight:600;font-size:.9rem;margin-top:.8rem;display:block}
+    .card-head{padding:16px 18px; border-bottom:1px dashed var(--line); background:var(--glass); backdrop-filter:blur(6px)}
+    .card-head h2{margin:0;font-size:1.1rem}
+    .section{padding:18px}
+    label{font-weight:600;font-size:.94rem;display:block;margin-top:10px}
     input,select,textarea,button{
-      width:100%;padding:12px;border:1px solid var(--line);
-      border-radius:12px;margin-top:4px;background:transparent;color:inherit;
-      font-size:1rem;transition:.15s;
+      width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);
+      background:transparent;color:inherit;font-size:1rem;outline:none;transition:.15s;
     }
     input:focus,select:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
-    button{
-      border:0;background:linear-gradient(90deg,var(--brand),var(--brand-2));
-      color:#fff;font-weight:700;border-radius:12px;padding:14px;
-      cursor:pointer;width:100%;margin-top:1.5rem;
-    }
-    .hint{font-size:.8rem;color:var(--muted);margin-top:4px}
-    .spinner{display:none;text-align:center;margin-top:10px;color:var(--muted)}
+    textarea{min-height:90px;resize:vertical}
+    .hint{font-size:.82rem;color:var(--muted)}
+    .btn{border:0;cursor:pointer;font-weight:700}
+    .btn-primary{background:linear-gradient(90deg,var(--brand),var(--brand-2));color:#fff}
+    .btn-ghost{background:#0000;border:1px dashed var(--line)}
+    footer{padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .spinner{display:none;margin-top:10px;color:var(--muted)}
     .spinner.show{display:block}
-    .toast{position:fixed;bottom:16px;right:16px;background:#111827;color:#fff;
-      padding:12px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.3);
-      display:none;z-index:99}
+    .toast{position:fixed;inset:auto 16px 16px auto;background:#111827;color:#fff;padding:12px 14px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.3);display:none;z-index:50}
     .toast.show{display:block}
+    .file-box{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border:1px dashed var(--line);border-radius:12px;margin-top:8px}
+    .file-name{font-size:.9rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   </style>
 </head>
 <body>
-  <form id="reservaForm" novalidate>
-    <h2>Reserva • Delícia Gourmet</h2>
-
+  <form id="reservaForm" class="card" novalidate>
+    <div class="card-head"><h2>Reserva • Delícia Gourmet</h2></div>
     <input type="hidden" name="acao" value="cadastrar">
     <input type="hidden" name="status" value="Pendente">
 
-    <label>Nome Completo *</label>
-    <input name="nome" required>
+    <div class="section">
+      <h3>👤 Dados do Cliente</h3>
+      <label>Nome Completo *</label>
+      <input name="nome" required>
+      <label>E-mail *</label>
+      <input name="email" type="email" required>
+      <label>Telefone (WhatsApp) *</label>
+      <input name="telefone" type="tel" inputmode="numeric" placeholder="(99) 99999-9999" required>
+      <label>Quantidade de Pessoas *</label>
+      <input name="pessoas" type="number" min="1" required>
+    </div>
 
-    <label>E-mail *</label>
-    <input name="email" type="email" required>
+    <div class="section">
+      <h3>🪑 Detalhes da Reserva</h3>
+      <label>Local da Reserva *</label>
+      <select name="mesa" required>
+        <option value="">Selecione o local</option>
+        <option>SALA VIP</option>
+        <option>SALA VIP 2</option>
+        <option>SACADA</option>
+        <option>SALÃO CENTRAL</option>
+      </select>
 
-    <label>Telefone (WhatsApp) *</label>
-    <input name="telefone" type="tel" inputmode="numeric" placeholder="(99) 99999-9999" required>
+      <label>Cardápio</label>
+      <select name="cardapio">
+        <option value="">Selecione</option>
+        <option>Buffet Ouro</option>
+        <option>Buffet Diamante</option>
+        <option>Buffet Master Gold</option>
+        <option>Rodízio Pizza</option>
+        <option>À la carte</option>
+      </select>
 
-    <label>Quantidade de Pessoas *</label>
-    <input name="pessoas" type="number" min="1" required>
+      <label>Data e Hora da Reserva *</label>
+      <input type="datetime-local" name="datahora" id="datahora" required>
+      <div class="hint">Não é permitido escolher data passada.</div>
+    </div>
 
-    <label>Local da Reserva *</label>
-    <select name="mesa" required>
-      <option value="">Selecione o local</option>
-      <option>SALA VIP</option>
-      <option>SALA VIP 2</option>
-      <option>SACADA</option>
-      <option>SALÃO CENTRAL</option>
-    </select>
+    <div class="section">
+      <h3>💳 Pagamento / Sinal</h3>
+      <label>Valor Estimado (R$)</label>
+      <input name="valorEstimado" type="text" inputmode="decimal" placeholder="0,00">
+      <label>Antecipação Inicial (R$)</label>
+      <input name="pagamentoAntecipado" type="text" inputmode="decimal" placeholder="0,00">
+      <label>Banco</label>
+      <select name="banco">
+        <option value="">Selecione</option>
+        <option>SICREDI</option>
+        <option>ITAÚ</option>
+        <option>CRÉDITO POS</option>
+        <option>DÉBITO POS</option>
+      </select>
+    </div>
 
-    <label>Cardápio</label>
-    <select name="cardapio">
-      <option value="">Selecione</option>
-      <option>Buffet Ouro</option>
-      <option>Buffet Diamante</option>
-      <option>Buffet Master Gold</option>
-      <option>Rodízio Pizza</option>
-      <option>À la carte</option>
-    </select>
+    <div class="section">
+      <h3>📝 Observações & Comprovante</h3>
+      <label>Observações</label>
+      <textarea name="observacoes" rows="3" placeholder="Preferências, restrições, aniversariante, etc."></textarea>
 
-    <label>Data e Hora da Reserva *</label>
-    <input type="datetime-local" name="datahora" id="datahora" required>
-    <div class="hint">Não é permitido escolher data passada.</div>
+      <label>Comprovante (PDF, JPG ou PNG)</label>
+      <input id="arquivo" type="file" accept=".pdf,.jpg,.jpeg,.png" />
+      <div class="file-box" id="fileBox" style="display:none">
+        <div class="file-name" id="fileName">—</div>
+        <button type="button" id="clearFile" class="btn btn-ghost" style="width:auto">Remover</button>
+      </div>
+      <div class="hint">Tamanho máximo 5 MB.</div>
+    </div>
 
-    <label>Valor Estimado (R$)</label>
-    <input name="valorEstimado" type="text" inputmode="decimal" placeholder="0,00">
-
-    <label>Antecipação Inicial (R$)</label>
-    <input name="pagamentoAntecipado" type="text" inputmode="decimal" placeholder="0,00">
-
-    <label>Banco</label>
-    <select name="banco">
-      <option value="">Selecione</option>
-      <option>SICREDI</option>
-      <option>ITAÚ</option>
-      <option>CRÉDITO POS</option>
-      <option>DÉBITO POS</option>
-    </select>
-
-    <label>Observações</label>
-    <textarea name="observacoes" rows="3" placeholder="Preferências, restrições, aniversariante, etc."></textarea>
-
-    <button type="submit">Salvar Reserva</button>
-    <div class="spinner" id="spinner">⬤ Enviando...</div>
+    <footer>
+      <div class="spinner" id="spinner">⬤ Enviando...</div>
+      <button type="submit" class="btn btn-primary" style="width:100%">Salvar Reserva</button>
+    </footer>
   </form>
 
   <div id="toast" class="toast"></div>
 
   <script>
     const endpoint = "https://script.google.com/macros/s/AKfycbzUWHOqC_ot1W2tZdDpHci7b7l0Vf3LZAtiP6KplC-M_XWZQ7hGUmiKrRj95jj3ieNpow/exec";
-
     const form = document.querySelector('#reservaForm');
     const spinner = document.querySelector('#spinner');
-    const toast = (msg, ms=3000) => {
-      const el = document.getElementById('toast');
-      el.textContent = msg;
-      el.classList.add('show');
-      setTimeout(()=>el.classList.remove('show'), ms);
-    };
-    const parseBRL = v => {
-      if(!v) return 0;
-      const s=v.toString().replace(/[^\d,.-]/g,'').replace(/\./g,'').replace(',', '.');
-      const n=Number(s); return isNaN(n)?0:n;
-    };
-    const nowLocalMin = ()=> {
-      const d=new Date();
-      d.setMinutes(d.getMinutes()-d.getTimezoneOffset());
-      return d.toISOString().slice(0,16);
-    };
+    const toast = (msg, ms=3000)=>{const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),ms)};
+    const parseBRL = v=>{if(!v)return 0;const s=v.toString().replace(/[^\d,.-]/g,'').replace(/\./g,'').replace(',','.');const n=Number(s);return isNaN(n)?0:n};
+    const nowLocalMin = ()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,16)};
     document.getElementById('datahora').min = nowLocalMin();
 
-    form.addEventListener('submit', async e=>{
+    const fileInput = document.getElementById('arquivo'), fileBox = document.getElementById('fileBox'), fileName = document.getElementById('fileName');
+    document.getElementById('clearFile').onclick=()=>{fileInput.value='';fileBox.style.display='none'};
+    fileInput.addEventListener('change',()=>{const f=fileInput.files[0];if(!f)return;fileName.textContent=f.name;fileBox.style.display='flex'});
+
+    const toBase64 = (file)=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)});
+
+    form.addEventListener('submit',async e=>{
       e.preventDefault();
-      if(!form.checkValidity()){ toast('Preencha os campos obrigatórios.'); return; }
-
-      const fd = new FormData(form);
-      const payload = Object.fromEntries(fd.entries());
-      payload.valorEstimado = String(parseBRL(payload.valorEstimado||0));
-      payload.pagamentoAntecipado = String(parseBRL(payload.pagamentoAntecipado||0));
-
+      if(!form.checkValidity()){toast('Preencha os campos obrigatórios.');return;}
+      const fd=new FormData(form);
+      const payload=Object.fromEntries(fd.entries());
+      payload.valorEstimado=String(parseBRL(payload.valorEstimado||0));
+      payload.pagamentoAntecipado=String(parseBRL(payload.pagamentoAntecipado||0));
+      const f=fileInput.files[0];if(f){const b64=await toBase64(f);payload.arquivo=b64.split(',')[1];payload.nomeArquivo=f.name;}
       spinner.classList.add('show');
       try{
-        const res = await fetch(endpoint, {method:'POST', body:new URLSearchParams(payload)});
-        const txt = await res.text();
-        if(res.ok){
-          toast('✅ Reserva registrada com sucesso!');
-          form.reset();
-        } else {
-          toast('⚠️ Erro ao salvar: '+txt);
-        }
-      }catch(err){
-        toast('❌ Falha de comunicação: '+err.message);
-      }
+        const res=await fetch(endpoint,{method:'POST',body:new URLSearchParams(payload)});
+        const txt=await res.text();
+        if(res.ok){toast('✅ Reserva registrada!');form.reset();fileBox.style.display='none';}
+        else toast('⚠️ Erro ao salvar: '+txt);
+      }catch(err){toast('❌ Falha de comunicação: '+err.message);}
       spinner.classList.remove('show');
     });
   </script>

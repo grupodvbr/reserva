@@ -45,7 +45,6 @@
     .spinner.show{display:block}
     .toast{position:fixed;inset:auto 16px 16px auto;background:#111827;color:#fff;padding:12px 14px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.3);display:none;z-index:50}
     .toast.show{display:block}
-    /* Oculta os campos de pagamento e anexo */
     .hidden-field{display:none !important;visibility:hidden !important;height:0 !important;overflow:hidden !important;}
   </style>
 </head>
@@ -70,13 +69,7 @@
     <div class="section">
       <h3>🪑 Detalhes da Reserva</h3>
       <label>Local da Reserva *</label>
-      <select name="mesa" required>
-        <option value="">Selecione o local</option>
-        <option>SALA VIP</option>
-        <option>SALA VIP 2</option>
-        <option>SACADA</option>
-        <option>SALÃO CENTRAL</option>
-      </select>
+      <input name="mesa" type="text" placeholder="Digite o local da reserva" required>
 
       <label>Comanda individual?</label>
       <select name="cardapio">
@@ -124,12 +117,6 @@
       el.textContent=msg;
       el.classList.add('show');
       setTimeout(()=>el.classList.remove('show'),ms);
-    };
-    const parseBRL = v=>{
-      if(!v)return 0;
-      const s=v.toString().replace(/[^\d,.-]/g,'').replace(/\./g,'').replace(',','.');
-      const n=Number(s);
-      return isNaN(n)?0:n;
     };
     const nowLocalMin = ()=>{
       const d=new Date();

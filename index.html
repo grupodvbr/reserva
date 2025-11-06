@@ -8,13 +8,13 @@
   <style>
     :root{
       --bg:#f3f5f9; --card:#ffffff; --text:#0f172a; --muted:#64748b; --line:#e5e7eb;
-      --brand:#2563eb; --brand-2:#1e40af; --ok:#16a34a; --warn:#b45309; --danger:#ef4444;
-      --accent:#f59e0b; --radius:16px; --shadow:0 12px 30px rgba(2,6,23,.06); --glass:rgba(255,255,255,.6);
+      --brand:#2563eb; --brand-2:#1e40af; --radius:16px;
+      --shadow:0 12px 30px rgba(2,6,23,.06);
     }
     @media (prefers-color-scheme: dark){
       :root{
         --bg:#0b0e14; --card:#0f131b; --text:#e5e7eb; --muted:#9ca3af; --line:#1f2937;
-        --shadow:0 12px 30px rgba(0,0,0,.35); --glass:rgba(17,24,39,.5);
+        --shadow:0 12px 30px rgba(0,0,0,.35);
       }
     }
     *{box-sizing:border-box}
@@ -27,7 +27,7 @@
       background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
       max-width:520px; width:100%; overflow:hidden;
     }
-    .card-head{padding:16px 18px; border-bottom:1px dashed var(--line); background:var(--glass); backdrop-filter:blur(6px)}
+    .card-head{padding:16px 18px; border-bottom:1px dashed var(--line); background:rgba(255,255,255,.6); backdrop-filter:blur(6px)}
     .card-head h2{margin:0;font-size:1.1rem}
     .section{padding:18px}
     label{font-weight:600;font-size:.94rem;display:block;margin-top:10px}
@@ -40,14 +40,13 @@
     .hint{font-size:.82rem;color:var(--muted)}
     .btn{border:0;cursor:pointer;font-weight:700}
     .btn-primary{background:linear-gradient(90deg,var(--brand),var(--brand-2));color:#fff}
-    .btn-ghost{background:#0000;border:1px dashed var(--line)}
     footer{padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
     .spinner{display:none;margin-top:10px;color:var(--muted)}
     .spinner.show{display:block}
     .toast{position:fixed;inset:auto 16px 16px auto;background:#111827;color:#fff;padding:12px 14px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.3);display:none;z-index:50}
     .toast.show{display:block}
-    .file-box{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border:1px dashed var(--line);border-radius:12px;margin-top:8px}
-    .file-name{font-size:.9rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    /* Oculta os campos de pagamento e anexo */
+    .hidden-field{display:none !important;visibility:hidden !important;height:0 !important;overflow:hidden !important;}
   </style>
 </head>
 <body>
@@ -94,34 +93,21 @@
       <div class="hint">Não é permitido escolher data passada.</div>
     </div>
 
-    <div class="section">
-      <h3>💳 Pagamento / Sinal</h3>
-      <label>Valor Estimado (R$)</label>
-      <input name="valorEstimado" type="text" inputmode="decimal" placeholder="0,00">
-      <label>Antecipação Inicial (R$)</label>
-      <input name="pagamentoAntecipado" type="text" inputmode="decimal" placeholder="0,00">
-      <label>Banco</label>
+    <!-- Mantidos mas ocultos -->
+    <div class="section hidden-field">
+      <input name="valorEstimado" type="text" inputmode="decimal" value="0">
+      <input name="pagamentoAntecipado" type="text" inputmode="decimal" value="0">
       <select name="banco">
-        <option value="">Selecione</option>
-        <option>SICREDI</option>
-        <option>ITAÚ</option>
-        <option>CRÉDITO POS</option>
-        <option>DÉBITO POS</option>
+        <option value=""></option>
       </select>
+      <input id="arquivo" type="file" accept=".pdf,.jpg,.jpeg,.png" />
+      <input type="hidden" name="nomeArquivo" value="">
     </div>
 
     <div class="section">
-      <h3>📝 Observações & Comprovante</h3>
+      <h3>📝 Observações</h3>
       <label>Observações</label>
       <textarea name="observacoes" rows="3" placeholder="Preferências, restrições, aniversariante, etc."></textarea>
-
-      <label>Comprovante (PDF, JPG ou PNG)</label>
-      <input id="arquivo" type="file" accept=".pdf,.jpg,.jpeg,.png" />
-      <div class="file-box" id="fileBox" style="display:none">
-        <div class="file-name" id="fileName">—</div>
-        <button type="button" id="clearFile" class="btn btn-ghost" style="width:auto">Remover</button>
-      </div>
-      <div class="hint">Tamanho máximo 5 MB.</div>
     </div>
 
     <footer>
@@ -136,32 +122,45 @@
     const endpoint = "https://script.google.com/macros/s/AKfycbzUWHOqC_ot1W2tZdDpHci7b7l0Vf3LZAtiP6KplC-M_XWZQ7hGUmiKrRj95jj3ieNpow/exec";
     const form = document.querySelector('#reservaForm');
     const spinner = document.querySelector('#spinner');
-    const toast = (msg, ms=3000)=>{const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),ms)};
-    const parseBRL = v=>{if(!v)return 0;const s=v.toString().replace(/[^\d,.-]/g,'').replace(/\./g,'').replace(',','.');const n=Number(s);return isNaN(n)?0:n};
-    const nowLocalMin = ()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,16)};
+    const toast = (msg, ms=3000)=>{
+      const el=document.getElementById('toast');
+      el.textContent=msg;
+      el.classList.add('show');
+      setTimeout(()=>el.classList.remove('show'),ms);
+    };
+    const parseBRL = v=>{
+      if(!v)return 0;
+      const s=v.toString().replace(/[^\d,.-]/g,'').replace(/\./g,'').replace(',','.');
+      const n=Number(s);
+      return isNaN(n)?0:n;
+    };
+    const nowLocalMin = ()=>{
+      const d=new Date();
+      d.setMinutes(d.getMinutes()-d.getTimezoneOffset());
+      return d.toISOString().slice(0,16);
+    };
     document.getElementById('datahora').min = nowLocalMin();
-
-    const fileInput = document.getElementById('arquivo'), fileBox = document.getElementById('fileBox'), fileName = document.getElementById('fileName');
-    document.getElementById('clearFile').onclick=()=>{fileInput.value='';fileBox.style.display='none'};
-    fileInput.addEventListener('change',()=>{const f=fileInput.files[0];if(!f)return;fileName.textContent=f.name;fileBox.style.display='flex'});
-
-    const toBase64 = (file)=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)});
 
     form.addEventListener('submit',async e=>{
       e.preventDefault();
       if(!form.checkValidity()){toast('Preencha os campos obrigatórios.');return;}
       const fd=new FormData(form);
       const payload=Object.fromEntries(fd.entries());
-      payload.valorEstimado=String(parseBRL(payload.valorEstimado||0));
-      payload.pagamentoAntecipado=String(parseBRL(payload.pagamentoAntecipado||0));
-      const f=fileInput.files[0];if(f){const b64=await toBase64(f);payload.arquivo=b64.split(',')[1];payload.nomeArquivo=f.name;}
+      payload.valorEstimado="0";
+      payload.pagamentoAntecipado="0";
+      payload.banco="";
+      payload.nomeArquivo="";
       spinner.classList.add('show');
       try{
         const res=await fetch(endpoint,{method:'POST',body:new URLSearchParams(payload)});
         const txt=await res.text();
-        if(res.ok){toast('✅ Reserva registrada!');form.reset();fileBox.style.display='none';}
-        else toast('⚠️ Erro ao salvar: '+txt);
-      }catch(err){toast('❌ Falha de comunicação: '+err.message);}
+        if(res.ok){
+          toast('✅ Reserva registrada!');
+          form.reset();
+        } else toast('⚠️ Erro ao salvar: '+txt);
+      }catch(err){
+        toast('❌ Falha de comunicação: '+err.message);
+      }
       spinner.classList.remove('show');
     });
   </script>
